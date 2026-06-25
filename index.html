@@ -5,17 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Marine Snow Games</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --deep:    #050f1a;
-      --abyss:   #071525;
-      --mid:     #0a2540;
-      --drift:   #c8e6f0;
-      --biolum:  #5effd8;
-      --muted:   #4a7a8a;
+      --deep:   #050f1a;
+      --drift:  #c8e6f0;
+      --biolum: #5effd8;
     }
 
     body {
@@ -24,146 +21,51 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      font-family: 'Inter', sans-serif;
-    }
-
-    /* ── tile ── */
-    .tile {
-      position: relative;
-      width: 320px;
-      height: 420px;
-      background: var(--abyss);
-      border: 1px solid rgba(94, 255, 216, 0.15);
-      border-radius: 4px;
       overflow: hidden;
-      cursor: pointer;
-      isolation: isolate;
     }
 
-    /* animated depth gradient */
-    .tile::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 80%, rgba(10,37,64,0.9) 0%, transparent 70%);
-      z-index: 1;
-    }
-
-    /* particle canvas */
     canvas {
-      position: absolute;
+      position: fixed;
       inset: 0;
       z-index: 0;
     }
 
-    /* content */
-    .tile-content {
+    h1 {
       position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      padding: 28px 24px 24px;
-    }
-
-    .eyebrow {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--biolum);
-      opacity: 0.7;
-      margin-bottom: 6px;
-    }
-
-    .title {
+      z-index: 1;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 52px;
-      line-height: 0.92;
+      font-size: clamp(56px, 12vw, 160px);
+      line-height: 0.9;
+      text-align: center;
+      letter-spacing: 0.03em;
       color: var(--drift);
-      letter-spacing: 0.02em;
+      user-select: none;
     }
 
-    .title span {
+    h1 span {
       display: block;
       color: var(--biolum);
-    }
-
-    .divider {
-      width: 32px;
-      height: 1px;
-      background: var(--biolum);
-      opacity: 0.4;
-      margin: 20px 0;
-    }
-
-    .descriptor {
-      font-size: 12px;
-      line-height: 1.65;
-      color: var(--muted);
-      font-weight: 300;
-      max-width: 220px;
-    }
-
-    .spacer { flex: 1; }
-
-    .cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--biolum);
-      opacity: 0.85;
-    }
-
-    .cta svg {
-      width: 14px;
-      height: 14px;
-      transition: transform 0.25s ease;
-    }
-
-    .tile:hover .cta svg {
-      transform: translateX(4px);
-    }
-
-    .tile:hover {
-      border-color: rgba(94, 255, 216, 0.35);
     }
   </style>
 </head>
 <body>
 
-<div class="tile" id="tile">
-  <canvas id="snow"></canvas>
+<canvas id="snow"></canvas>
 
-  <div class="tile-content"
-    <h1 class="title">Marine<span>Snow</span>Games</h1>
-    <div class="divider"></div>
-    <p class="descriptor">
-    </p>
-    <div class="spacer"></div>
-    <div class="cta">
-      Dive in
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 8h10M9 4l4 4-4 4"/>
-      </svg>
-    </div>
-  </div>
-</div>
+<h1>Marine<span>Snow</span>Games</h1>
 
 <script>
   const canvas = document.getElementById('snow');
   const ctx = canvas.getContext('2d');
-  const tile = document.getElementById('tile');
 
   function resize() {
-    canvas.width  = tile.offsetWidth;
-    canvas.height = tile.offsetHeight;
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
   resize();
+  window.addEventListener('resize', resize);
 
-  const COUNT = 80;
+  const COUNT = 160;
   const particles = Array.from({ length: COUNT }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
@@ -184,10 +86,7 @@
       p.x += p.vx;
       p.y += p.vy;
 
-      if (p.y > canvas.height + 2) {
-        p.y = -2;
-        p.x = Math.random() * canvas.width;
-      }
+      if (p.y > canvas.height + 2) { p.y = -2; p.x = Math.random() * canvas.width; }
       if (p.x < -2) p.x = canvas.width + 2;
       if (p.x > canvas.width + 2) p.x = -2;
     }
