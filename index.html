@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Marine Snow Games</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300&display=swap');
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -18,8 +18,10 @@
     body {
       background: var(--deep);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 32px;
       min-height: 100vh;
       overflow: hidden;
     }
@@ -46,13 +48,31 @@
       display: block;
       color: var(--biolum);
     }
+
+    .status {
+      position: relative;
+      z-index: 1;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: clamp(11px, 1.4vw, 14px);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--biolum);
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%   { opacity: 0.3; text-shadow: none; }
+      50%  { opacity: 1;   text-shadow: 0 0 12px rgba(94,255,216,0.8), 0 0 30px rgba(94,255,216,0.3); }
+      100% { opacity: 0.3; text-shadow: none; }
+    }
   </style>
 </head>
 <body>
 
 <canvas id="snow"></canvas>
-
 <h1>Marine<span>Snow</span>Games</h1>
+<p class="status">Now in Active Development</p>
 
 <script>
   const canvas = document.getElementById('snow');
